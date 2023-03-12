@@ -1,0 +1,31 @@
+{% load static %}
+
+<div class="other-status-block">
+ <div>
+     <div>Панель статусов</div>
+     <div class="status-row">
+         <img  height="20px" src="{% static 'img.png' %}">
+         <div style="padding: 2% 10px 0 0">Статус</div>
+         <div>
+              <select class="select-block">
+                 <option value="1" selected="selected" disabled>выберите статус</option>
+                  {% for item in ALL_STATUSES %}
+                 <option value="2">{{ item.name }}</option>
+                  {% endfor %}
+             </select>
+         </div>
+    </div>
+ </div>
+</div>
+
+<style>
+.status-row{
+    display: flex;
+    text-align: center;
+    vertical-align: middle;
+    cursor: grab;
+    margin: 10px;
+    padding: 5px;
+    border: dotted 1px #1b1b1b;
+}
+</style>

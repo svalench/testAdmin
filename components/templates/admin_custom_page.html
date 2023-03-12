@@ -1,0 +1,61 @@
+{% extends 'admin/base_site.html' %}
+{% load static %}
+{% block extrahead %}
+<style>
+    thead {
+        position: sticky;
+        top: 0;
+    }
+</style>
+{% endblock %}
+{% block title %}Настройка компонентов{% endblock %}
+
+{% block content %}
+    <div class="fieldsets">
+        <fieldset class="module">
+            <h1>Настройка видимости компонентов на странице расчета</h1>
+            <div>
+                Настройка по статусам:
+                <div>
+                    <span><a href="{% url 'components_view' %}?status=DOCUMENTS_TYPES">по типу документа</a></span>
+                    <span><a href="{% url 'components_view' %}?status=USERS_ROLES">по типу пользоватля</a></span>
+                    <span><a href="{% url 'components_view' %}?status=DOC_STATUS">по статусу расчета</a></span>
+                    <span><a href="{% url 'components_view' %}?status=TYPES_WORK">по статусу занятости расчета</a></span>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="table-components">
+    <table border="1">
+       <thead><tr>
+       <th><input type="checkbox" id="selectAll" onchange="selectAll(this)"></th>
+       <th>название</th>
+       <th>data_id</th>
+           {% for status in STATUSES %}
+        <th>{{ status.name }}</th>
+           {% endfor %}
+       </tr></thead>
+    {% for component in COMPONENTS %}
+       <tr>
+           <td><input type="checkbox" onchange="selectRow(this)" class="check-row"></td>
+           <td>{{ component.name }}</td>
+           <td>{{ component.data_id }}
+               {% for status in STATUSES %}
+                   {% include "table_cell.html" %}
+           {% endfor %}
+       </tr>
+    {% endfor %}
+    </table>
+    </div>
+
+<script>
+function selectAll(elem){
+    for(let el of document.querySelectorAll('input.check-row')){
+        el.checked = elem.checked
+    }
+}
+function selectRow(elem){
+    document.querySelector('#selectAll').checked = [...document.querySelectorAll('input.check-row')].every(x=>x.checked);
+}
+</script>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "admin/index.html" %}
+
+{% block content %}
+    <div class="custom_block">
+        <p><a href="{% url 'components_view' %}">Настройка видимости компонентов</a></p>
+    </div>
+
+    {{ block.super }}
+{% endblock %}

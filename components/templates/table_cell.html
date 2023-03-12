@@ -1,0 +1,19 @@
+<td>
+    <div>
+        {% include 'select_status.html' %}
+    </div>
+    <div>
+        <label for="enableOtherStatus">Учитывать другие статусы</label>
+        <input type="checkbox" id="enableOtherStatus"  onchange="showOtherStatusPanel(this)"/>
+        <div hidden class="panel-other-status">
+            {% include "other_status_block.html" %}
+        </div>
+    </div>
+</td>
+
+<script>
+    function showOtherStatusPanel(elem){
+        elem.parentElement.querySelector('.panel-other-status').hidden = !elem.checked;
+        //elem.parentElement.parentElement.querySelector('.select-block').disabled = elem.checked;
+    }
+</script>
