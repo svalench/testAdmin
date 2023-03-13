@@ -25,6 +25,10 @@ class Components(BaseClassModel):
     data_id = models.CharField("идентификатор", max_length=250, null=False)
     page = models.CharField("название страницы", max_length=250, null=True)
 
+    class Meta:
+        verbose_name = 'Компонент'
+        verbose_name_plural = 'Комопненты'
+
 
 class BaseChoiceClassStatuses(BaseClassModel):
     """базовый класс выбора статуса компонента"""
@@ -50,6 +54,10 @@ class StatusUser(BaseClassManyToManyModel):
     """статусная модель типов пользователей"""
     component = models.ManyToManyField(Components, through='Components_StatusUser')
 
+    class Meta:
+        verbose_name = 'Роль пользователя'
+        verbose_name_plural = 'Роли пользователя'
+
 
 class Components_StatusUser(BaseChoiceClassStatuses):
     status_user = models.ForeignKey(StatusUser, on_delete=models.CASCADE)
@@ -58,6 +66,10 @@ class Components_StatusUser(BaseChoiceClassStatuses):
 class StatusDocType(BaseClassManyToManyModel):
     """статусная модель типов расчетов"""
     component = models.ManyToManyField(Components, through='Components_StatusDocType')
+
+    class Meta:
+        verbose_name = 'Тип расчета'
+        verbose_name_plural = 'Типы расчета'
 
 
 class Components_StatusDocType(BaseChoiceClassStatuses):
@@ -68,6 +80,10 @@ class StatusWorkType(BaseClassManyToManyModel):
     """статусная модель типов расчетов в работе"""
     component = models.ManyToManyField(Components, through='Components_StatusWorkType')
 
+    class Meta:
+        verbose_name = 'Рабочий статус документа'
+        verbose_name_plural = 'Рабочие статусы документов'
+
 
 class Components_StatusWorkType(BaseChoiceClassStatuses):
     status_work_type = models.ForeignKey(StatusWorkType, on_delete=models.CASCADE)
@@ -76,6 +92,10 @@ class Components_StatusWorkType(BaseChoiceClassStatuses):
 class StatusCalculation(BaseClassManyToManyModel):
     """статусная модель расчетов"""
     component = models.ManyToManyField(Components, through='Components_StatusCalculation')
+
+    class Meta:
+        verbose_name = 'Статус расчета'
+        verbose_name_plural = 'Статусы расчетов'
 
 
 class Components_StatusCalculation(BaseChoiceClassStatuses):
