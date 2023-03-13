@@ -52,7 +52,7 @@ class BaseChoiceClassStatuses(BaseClassModel):
 
 class StatusUser(BaseClassManyToManyModel):
     """статусная модель типов пользователей"""
-    code = models.CharField('код', max_length=200, null=False)
+    code = models.CharField('код', max_length=200, null=False, default='sbe')
     component = models.ManyToManyField(Components, through='Components_StatusUser')
 
     class Meta:
@@ -66,7 +66,7 @@ class Components_StatusUser(BaseChoiceClassStatuses):
 
 class StatusDocType(BaseClassManyToManyModel):
     """статусная модель типов расчетов"""
-    code = models.CharField('код', max_length=200, null=False)
+    code = models.CharField('код', max_length=200, null=False, default='excel')
     component = models.ManyToManyField(Components, through='Components_StatusDocType')
 
     class Meta:
