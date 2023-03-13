@@ -27,6 +27,7 @@ class Components(BaseClassModel):
 
 
 class BaseChoiceClassStatuses(BaseClassModel):
+    """базовый класс выбора статуса компонента"""
     component = models.ForeignKey(Components, on_delete=models.CASCADE)
 
     class StatusesComponents(models.TextChoices):
@@ -46,6 +47,7 @@ class BaseChoiceClassStatuses(BaseClassModel):
 
 
 class StatusUser(BaseClassManyToManyModel):
+    """статусная модель типов пользователей"""
     component = models.ManyToManyField(Components, through='Components_StatusUser')
 
 
@@ -54,6 +56,7 @@ class Components_StatusUser(BaseChoiceClassStatuses):
 
 
 class StatusDocType(BaseClassManyToManyModel):
+    """статусная модель типов расчетов"""
     component = models.ManyToManyField(Components, through='Components_StatusDocType')
 
 
@@ -62,6 +65,7 @@ class Components_StatusDocType(BaseChoiceClassStatuses):
 
 
 class StatusWorkType(BaseClassManyToManyModel):
+    """статусная модель типов расчетов в работе"""
     component = models.ManyToManyField(Components, through='Components_StatusWorkType')
 
 
@@ -70,6 +74,7 @@ class Components_StatusWorkType(BaseChoiceClassStatuses):
 
 
 class StatusCalculation(BaseClassManyToManyModel):
+    """статусная модель расчетов"""
     component = models.ManyToManyField(Components, through='Components_StatusCalculation')
 
 
