@@ -65,6 +65,7 @@ def components_view(request):
     Model = apps.get_model(app_label='components', model_name=model)
     ctx = {
         'data': 'test',
+        'many_to_many': next(iter(Model._meta.fields_map.keys())),
         "COMPONENTS": Components.objects.all(),
         "STATUSES": Model.objects.all(),
         "ALL_STATUSES": [*DOCUMENTS_TYPES, *TYPES_WORK, *DOC_STATUS]
