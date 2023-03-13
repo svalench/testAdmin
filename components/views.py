@@ -1,4 +1,7 @@
 from django.shortcuts import render
+from django.apps import apps
+
+from components.models import Components
 
 DOCUMENTS_TYPES = [
     {"name": "Тип документа ГИ", "id": "db"},
@@ -58,11 +61,12 @@ def components_view(request):
         "DOC_STATUS": DOC_STATUS,
         "USERS_ROLES": USERS_ROLES
     }
-    STATUSES = STAT.get(request.GET.get('status', 'TYPES_WORK'))
+    model = request.GET.get('model', 'StatusUser')
+    Model = apps.get_model(app_label='components', model_name=model)
     ctx = {
         'data': 'test',
-        "COMPONENTS": COMPONENTS,
-        "STATUSES": STATUSES,
+        "COMPONENTS": Components.objects.all(),
+        "STATUSES": Model.objects.all(),
         "ALL_STATUSES": [*DOCUMENTS_TYPES, *TYPES_WORK, *DOC_STATUS]
     }
     return render(request, 'admin_custom_page.html', ctx)

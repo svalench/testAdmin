@@ -6,6 +6,12 @@
         position: sticky;
         top: 0;
     }
+    .menu-types{
+        margin: 12px;
+        border: solid rgba(72,81,141,0.75);
+        border-radius: 4px;
+        padding: 3px;
+    }
 </style>
 {% endblock %}
 {% block title %}Настройка компонентов{% endblock %}
@@ -16,11 +22,11 @@
             <h1>Настройка видимости компонентов на странице расчета</h1>
             <div>
                 Настройка по статусам:
-                <div>
-                    <span><a href="{% url 'components_view' %}?status=DOCUMENTS_TYPES">по типу документа</a></span>
-                    <span><a href="{% url 'components_view' %}?status=USERS_ROLES">по типу пользоватля</a></span>
-                    <span><a href="{% url 'components_view' %}?status=DOC_STATUS">по статусу расчета</a></span>
-                    <span><a href="{% url 'components_view' %}?status=TYPES_WORK">по статусу занятости расчета</a></span>
+                <div style="padding: 12px;">
+                    <span class="menu-types"><a href="{% url 'components_view' %}?model=StatusDocType">по типу документа</a></span>
+                    <span class="menu-types"><a href="{% url 'components_view' %}?model=StatusUser">по типу пользоватля</a></span>
+                    <span class="menu-types"><a href="{% url 'components_view' %}?model=StatusCalculation">по статусу расчета</a></span>
+                    <span class="menu-types"><a href="{% url 'components_view' %}?model=StatusWorkType">по статусу занятости расчета</a></span>
                 </div>
             </div>
         </fieldset>
