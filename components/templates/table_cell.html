@@ -2,7 +2,7 @@
     <div>
         {% include 'select_status.html' %}
     </div>
-    <div>
+    <div hidden>
         <label for="enableOtherStatus">Учитывать другие статусы</label>
         <input type="checkbox" id="enableOtherStatus"  onchange="showOtherStatusPanel(this)"/>
         <div hidden class="panel-other-status">

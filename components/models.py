@@ -15,6 +15,9 @@ class BaseClassManyToManyModel(BaseClassModel):
     """базовый класс для создания моделей Many to Many соотношений статусов"""
     name = models.CharField("название", max_length=250, null=False, unique=True)
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         abstract = True
 
@@ -61,7 +64,7 @@ class StatusUser(BaseClassManyToManyModel):
 
 
 class Components_StatusUser(BaseChoiceClassStatuses):
-    status_user = models.ForeignKey(StatusUser, on_delete=models.CASCADE)
+    model_status = models.ForeignKey(StatusUser, on_delete=models.CASCADE)
 
 
 class StatusDocType(BaseClassManyToManyModel):
@@ -75,7 +78,7 @@ class StatusDocType(BaseClassManyToManyModel):
 
 
 class Components_StatusDocType(BaseChoiceClassStatuses):
-    status_doc_type = models.ForeignKey(StatusDocType, on_delete=models.CASCADE)
+    model_status = models.ForeignKey(StatusDocType, on_delete=models.CASCADE)
 
 
 class StatusWorkType(BaseClassManyToManyModel):
@@ -88,7 +91,7 @@ class StatusWorkType(BaseClassManyToManyModel):
 
 
 class Components_StatusWorkType(BaseChoiceClassStatuses):
-    status_work_type = models.ForeignKey(StatusWorkType, on_delete=models.CASCADE)
+    model_status = models.ForeignKey(StatusWorkType, on_delete=models.CASCADE)
 
 
 class StatusCalculation(BaseClassManyToManyModel):
@@ -101,4 +104,4 @@ class StatusCalculation(BaseClassManyToManyModel):
 
 
 class Components_StatusCalculation(BaseChoiceClassStatuses):
-    status_calc = models.ForeignKey(StatusCalculation, on_delete=models.CASCADE)
+    model_status = models.ForeignKey(StatusCalculation, on_delete=models.CASCADE)

@@ -1,6 +1,18 @@
- <select class="select-block">
-     {%  for status in statuses %}
-     <option {% if status == status.NOT_ALLOW %} selected="selected" disabled {% endif %}
-             value="{{ status }}">{{ status.label }}</option>
+{% load getattribute %}
+{% load getfirststatus %}
+{% with status.pk|to_str as status_id %}
+{% with '{"model_status_id": "'|add:status_id|add:'"}' as json_to %}
+{% with component|getfirststatus:key_set|setparams:json_to as a %}
+ <select class="select-block" onchange="changeStatus(this, {{ component.pk }}, {{ status.pk }})">
+     {%  for status_ in statuses %}
+     <option {% if a and a.first.status == status_ and status == a.first.model_status %}
+         selected="selected"
+     {% elif status_ == status.NOT_ALLOW  and not component|getfirststatus:key_set|getattribute:'status'  %}
+         selected="selected" disabled
+     {% endif %}
+             value="{{ status_ }}">{{ status_.label }}</option>
      {% endfor %}
  </select>
+ {% endwith %}
+ {% endwith %}
+ {% endwith %}

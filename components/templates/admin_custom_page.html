@@ -1,30 +1,40 @@
 {% extends 'admin/base_site.html' %}
 {% load static %}
 {% block extrahead %}
-<style>
-    thead {
-        position: sticky;
-        top: 0;
-    }
-    .menu-types{
-        margin: 12px;
-        border: solid rgba(72,81,141,0.75);
-        border-radius: 4px;
-        padding: 3px;
-    }
-</style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <style>
+        thead {
+            position: sticky;
+            top: 0;
+        }
+
+        .menu-types {
+            margin: 12px;
+            border: solid rgba(72, 81, 141, 0.75);
+            border-radius: 4px;
+            padding: 3px;
+        }
+    </style>
 {% endblock %}
 {% block title %}Настройка компонентов{% endblock %}
 
 {% block content %}
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+            integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+            crossorigin="anonymous"></script>
     <div class="fieldsets">
         <fieldset class="module">
-            <h1>Настройка видимости компонентов на странице расчета</h1>
+            <h3>Настройка видимости компонентов на странице расчета</h3>
             <div>
                 Настройка по статусам:
                 <div style="padding: 12px;">
-                    <span class="menu-types"><a href="{% url 'components_view' %}?model=StatusDocType">по типу документа</a></span>
-                    <span class="menu-types"><a href="{% url 'components_view' %}?model=StatusUser">по типу пользоватля</a></span>
+                    <span class="menu-types"><a
+                            href="{% url 'components_view' %}?model=StatusDocType">по типу документа</a></span>
+                    <span class="menu-types"><a
+                            href="{% url 'components_view' %}?model=StatusUser">по типу пользоватля</a></span>
                     <span class="menu-types"><a href="{% url 'components_view' %}?model=StatusCalculation">по статусу расчета</a></span>
                     <span class="menu-types"><a href="{% url 'components_view' %}?model=StatusWorkType">по статусу занятости расчета</a></span>
                 </div>
@@ -32,36 +42,87 @@
         </fieldset>
     </div>
     <div class="table-components">
-    <table border="1">
-       <thead><tr>
-       <th><input type="checkbox" id="selectAll" onchange="selectAll(this)"></th>
-       <th>название</th>
-       <th>data_id</th>
-           {% for status in STATUSES %}
-        <th>{{ status.name }}</th>
-           {% endfor %}
-       </tr></thead>
-    {% for component in COMPONENTS %}
-       <tr>
-           <td><input type="checkbox" onchange="selectRow(this)" class="check-row"></td>
-           <td>{{ component.name }}</td>
-           <td>{{ component.data_id }}
-               {% for status in STATUSES %}
-                   {% include "table_cell.html" %}
-           {% endfor %}
-       </tr>
-    {% endfor %}
-    </table>
+        <table border="1">
+            <thead>
+            <tr>
+                <th><input type="checkbox" id="selectAll" onchange="selectAll(this)"></th>
+                <th>название</th>
+                <th>data_id</th>
+                {% for status in STATUSES %}
+                    <th>{{ status.name }}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+            {% for component in COMPONENTS %}
+                <tr>
+                    <td><input type="checkbox" onchange="selectRow(this)" class="check-row"></td>
+                    <td>{{ component.name }}</td>
+                    <td>{{ component.data_id }}
+                        {% for status in STATUSES %}
+                            {% include "table_cell.html" %}
+                        {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% include 'toast.html' %}
     </div>
 
-<script>
-function selectAll(elem){
-    for(let el of document.querySelectorAll('input.check-row')){
-        el.checked = elem.checked
-    }
-}
-function selectRow(elem){
-    document.querySelector('#selectAll').checked = [...document.querySelectorAll('input.check-row')].every(x=>x.checked);
-}
-</script>
+    <script>
+        const toastContainer = document.getElementById('toast')
+        const toastLiveExample = document.getElementById('liveToast')
+
+        function selectAll(elem) {
+            for (let el of document.querySelectorAll('input.check-row')) {
+                el.checked = elem.checked
+            }
+        }
+
+        function selectRow(elem) {
+            document.querySelector('#selectAll').checked = [...document.querySelectorAll('input.check-row')].every(x => x.checked);
+        }
+
+        function changeStatus(elem, componenetId, statusId) {
+            let data = {
+                component_id: componenetId,
+                status_id: statusId,
+                key_set: '{{ key_set }}',
+                many_to_many: '{{ many_to_many }}',
+                status: elem.value,
+            }
+            let urlSaveStatus = "{% url 'save_component_status' %}"
+            sendDataToApi('POST', urlSaveStatus, data, showSavedParam, showerrorSave)
+        }
+
+        const showSavedParam = () => {
+            toastContainer.innerText = 'Сохранено';
+            showToast()
+        }
+        const showerrorSave = (e) => {
+            console.error(e)
+            toastContainer.innerText = 'Ошибка сохранения';
+            showToast()
+        }
+
+
+        function showToast() {
+            let toast = new bootstrap.Toast(toastLiveExample)
+            toast.show()
+        }
+
+
+        function sendDataToApi(type = 'POST', url = '/', data = {}, success_callback, error_callback) {
+            fetch(url, {
+                method: type,
+                headers: {"Content-Type": "application/json", 'X-CSRFToken': '{{csrf_token}}'},
+                body: JSON.stringify(data),
+                credentials: 'same-origin',
+            }).then((response) => response.json())
+                .then((data) => {
+                    success_callback?success_callback():console.log("Success:", data);
+                }).catch((error) => {
+                error_callback?error_callback():console.error("Error:", error);
+            });
+        }
+    </script>
 {% endblock %}

@@ -1,10 +1,27 @@
 from django.contrib import admin
 
-from components.models import StatusUser, StatusDocType, StatusWorkType, StatusCalculation, Components
+from components.models import StatusUser, StatusDocType, StatusWorkType, StatusCalculation, Components, \
+    Components_StatusCalculation, Components_StatusWorkType, Components_StatusDocType
+
+
+class Components_StatusCalculationInline(admin.StackedInline):
+    model = Components_StatusCalculation
+    extra = 1
+
+
+class Components_StatusWorkTypeInline(admin.StackedInline):
+    model = Components_StatusWorkType
+    extra = 1
+
+
+class Components_StatusDocTypeInline(admin.StackedInline):
+    model = Components_StatusDocType
+    extra = 1
 
 
 class ComponentsAdmin(admin.ModelAdmin):
     model = Components
+    inlines = [Components_StatusCalculationInline, Components_StatusWorkTypeInline, Components_StatusDocTypeInline]
     list_display = ["id", "name", "data_id"]
 
 
