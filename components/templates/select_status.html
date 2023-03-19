@@ -1,6 +1,6 @@
  <select class="select-block">
-     <option value="1" selected="selected" disabled>не указано</option>
-     <option value="2">Невидимый</option>
-     <option value="3">Видимый/заблокированный</option>
-     <option value="4">Видимый/редактируемый</option>
+     {%  for status in statuses %}
+     <option {% if status == status.NOT_ALLOW %} selected="selected" disabled {% endif %}
+             value="{{ status }}">{{ status.label }}</option>
+     {% endfor %}
  </select>
